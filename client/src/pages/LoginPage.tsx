@@ -8,13 +8,18 @@ const LoginPage: React.FC = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    login(username, password);
+  };
+
   return (
     <div className="App">
-      <Form onSubmit={() => login(username, password)}>
+      <Form onSubmit={handleLogin}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>username</Form.Label>
           <Form.Control
-            type="email"
+            type="text"
             placeholder="username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
@@ -36,7 +41,7 @@ const LoginPage: React.FC = () => {
       </Form>
       <div>
         <p>
-         Don't have an account? <Link to="/register">Register</Link>
+          Don't have an account? <Link to="/register">Register</Link>
         </p>
       </div>
     </div>

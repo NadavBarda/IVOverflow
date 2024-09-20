@@ -78,7 +78,7 @@ const RegisterPage: React.FC = () => {
       </Form>
       <div>
         <p>
-          Don't have an account? <Link to="/register">Register</Link>
+          Already have an account? <Link to="/login">login</Link>
         </p>
       </div>
     </div>

@@ -1,13 +1,12 @@
-export interface RegisterUser {
+import { Document, Types } from "mongoose";
+
+export interface IUser extends Document {
+  _id: Types.ObjectId;
   username: string;
-  password: string;
   firstName: string;
   lastName: string;
   email: string;
-}
-
-export interface LoginUser {
-  username: string;
   password: string;
-  id: string;
+  createdAt: Date;
+  myQuestions: Types.ObjectId[];
 }

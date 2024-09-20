@@ -1,6 +1,7 @@
 import { Response, Request } from "express";
 import bcrypt from "bcrypt";
-import User from "../models/userModel.js";
+import { User } from "../models/userModel";
+import { IUser } from "../interface/userInterface";
 
 function validateLoginInput(req: Request, res: Response) {
   const { username, password } = req.body;
@@ -34,4 +35,19 @@ async function comparePassword(
   return true;
 }
 
-export { validateLoginInput, findUser, comparePassword };
+const createUserDb = async (userData: IUser) => {
+  const { username, password, email, firstName, lastName } = userData;
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const user = new User({
+    username,
+    password: hashedPassword,
+    email,
+    firstName,
+    lastName,
+    myQuestions: [],
+  });
+  const newUser = await user.save();
+  return newUser;
+};
+
+export { validateLoginInput, findUser, comparePassword, createUserDb };

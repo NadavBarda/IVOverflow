@@ -1,26 +1,19 @@
 import jwt from "jsonwebtoken";
 import { Response } from "express";
-import { Types } from "mongoose";
+import { IUser } from "../interface/userInterface";
 
-interface TokenUser {
-  username: string;
-  email: string;
-  _id: Types.ObjectId;
-}
-
-function generateToken(user: TokenUser, res: Response): string | null {
+function generateToken(user: IUser, res: Response) {
   const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
   if (!ACCESS_TOKEN_SECRET) {
     res.status(500).json({ message: "Internal server error" });
     return null;
   }
-
   const token = jwt.sign(
     {
       user: {
         username: user.username,
         email: user.email,
-        id: user._id.toString(),
+        id: user.id.toString(),
       },
     },
     ACCESS_TOKEN_SECRET,
@@ -29,5 +22,4 @@ function generateToken(user: TokenUser, res: Response): string | null {
 
   return token;
 }
-
 export { generateToken };
