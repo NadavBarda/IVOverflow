@@ -9,19 +9,9 @@ const QuestionSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    user: {
-        type: {
-            username: {
-                type: String,
-                required: true
-            },
-            _id: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "User",
-                required: true
-            }
-        },
-        required: true // Make sure the user object is required
+    tags: {
+        type: [String],
+        required: true
     },
     date: {
         type: Date,
