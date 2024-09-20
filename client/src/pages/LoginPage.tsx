@@ -14,9 +14,11 @@ const LoginPage: React.FC = () => {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    const user = await login(username, password);
-    if (!user) return;
-    dispatch(setUser(user));
+    const userData = await login(username, password);
+    if (!userData) return;
+    localStorage.setItem("token", userData.token);
+  
+    dispatch(setUser(userData.user));
     navigate("/question");
   };
 

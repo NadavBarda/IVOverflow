@@ -7,6 +7,6 @@ export interface RegisterUser {
 }
 
 export interface IUser {
-  _id: string;
+  id: string;
   username: string;
 }

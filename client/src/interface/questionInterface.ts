@@ -1,9 +1,8 @@
 export interface IQuestion {
-    _id: string;
-    title: string;
-    question: string;
-    user: string;
-    date: Date;
+  _id?: string;
+  title: string;
+  body: string;
+  user: string;
+  tags?: string[];
+  date?: Date;
 }
-
-

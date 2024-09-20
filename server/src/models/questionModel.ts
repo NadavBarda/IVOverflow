@@ -1,18 +1,27 @@
 import mongoose from "mongoose";
-import { title } from "process";
 
 const QuestionSchema = new mongoose.Schema({
     title: {
         type: String,
         required: true
     },
-    question: {
+    body: {
         type: String,
         required: true
     },
     user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
+        type: {
+            username: {
+                type: String,
+                required: true
+            },
+            _id: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "User",
+                required: true
+            }
+        },
+        required: true // Make sure the user object is required
     },
     date: {
         type: Date,
@@ -20,4 +29,4 @@ const QuestionSchema = new mongoose.Schema({
     }
 });
 
-export default mongoose.model("Question", QuestionSchema);
+export const Question = mongoose.model("Question", QuestionSchema);
