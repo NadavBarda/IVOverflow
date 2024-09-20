@@ -17,7 +17,11 @@ const UserSchema = new mongoose.Schema({
     date: {
         type: Date,
         default: Date.now
-    }
+    },
+    myQuestions: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Question"
+    }]
 });
 
 export default mongoose.model("User", UserSchema);
