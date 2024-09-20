@@ -6,8 +6,7 @@ export interface RegisterUser {
   email: string;
 }
 
-export interface LoginUser {
+export interface IUser {
+  _id: string;
   username: string;
-  password: string;
-  id: string;
 }

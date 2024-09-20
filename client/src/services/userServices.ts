@@ -1,14 +1,14 @@
 import { RegisterUser } from "../interface/userInterface";
 import { axiosPost } from "./axiosConfig";
 
+
 const login = async (username: string, password: string) => {
+  
   const res = await axiosPost("/api/users/login", {
     username,
     password,
   });
-  console.log(res.data);
-  
-  return res;
+  return res.data;
 };
 
 const register = async (user: RegisterUser) => {
