@@ -3,6 +3,16 @@ interface IUserQuestion {
   username: string;
 }
 
+interface IAnswer {
+  body: string;
+  user: IUserQuestion;
+  likes: number;
+  dislikes: number;
+  question: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export interface IQuestion {
   updatedAt?: Date;
   _id?: string;
@@ -10,4 +20,5 @@ export interface IQuestion {
   body: string;
   user: IUserQuestion;
   tags?: string[];
+  answers?: IAnswer[];
 }
