@@ -1,9 +1,9 @@
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import { register } from "../services/userServices";
+import { register } from "../../services/userServices";
 import { Link } from "react-router-dom";
-import { RegisterUser } from "../interface/userInterface";
+import { RegisterUser } from "../../interface/userInterface";
 
 const RegisterPage: React.FC = () => {
   const [user, setUser] = useState<RegisterUser>({
@@ -19,7 +19,7 @@ const RegisterPage: React.FC = () => {
     setUser((u) => ({ ...u, [name]: value }));
   };
   return (
-    <div className="App">
+    <div className="page ">
       <Form onSubmit={() => register(user)}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>username</Form.Label>

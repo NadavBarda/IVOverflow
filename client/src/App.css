@@ -4,18 +4,31 @@
   padding: 2rem;
   text-align: center;
 }
+
 .tags {
   display: flex;
   justify-content: center;
   gap: 0.5rem;
   padding: 1rem;
 }
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+
+.App{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #f5f5f5ce;
 }
+
+.page{
+  margin-top: 2rem;
+  width: 80%;
+  background-color: white;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
