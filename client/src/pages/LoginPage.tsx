@@ -17,8 +17,7 @@ const LoginPage: React.FC = () => {
     const userData = await login(username, password);
     if (!userData) return;
     localStorage.setItem("token", userData.token);
-  
-    dispatch(setUser(userData.user));
+    dispatch(setUser(userData));
     navigate("/question");
   };
 

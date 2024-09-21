@@ -24,7 +24,7 @@ const validateToken = asyncHandler(
             throw new Error("User is not authorized");
           }
           const decode = decoded as JwtPayload;
-          req.user = decode.user;
+          req.body.user = decode.user;
           next();
         }
       );

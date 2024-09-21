@@ -23,10 +23,6 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    date: {
-      type: Date,
-      default: Date.now,
-    },
     myQuestions: [
       {
         type: mongoose.Schema.Types.ObjectId,

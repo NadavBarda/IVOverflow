@@ -1,7 +1,6 @@
 import asyncHandler from "express-async-handler";
 import { Response, Request } from "express";
 import { User } from "../models/userModel";
-
 import { generateToken } from "../services/tokenServices";
 import {
   comparePassword,
@@ -9,7 +8,6 @@ import {
   findUser,
   validateLoginInput,
 } from "../services/usersServices";
-import { log } from "console";
 
 const login = asyncHandler(async (req: Request, res: Response) => {
   const input = validateLoginInput(req, res);

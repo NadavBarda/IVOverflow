@@ -1,15 +1,27 @@
 import { Button, Form } from "react-bootstrap";
+import { FC } from "react";
 import { IQuestion } from "../interface/questionInterface";
 import { useState } from "react";
-import { axiosPost } from "../services/axiosConfig";
+import { addQuestion } from "../services/questionServices";
+import { useDispatch } from "react-redux";
+import Modal from 'react-bootstrap/Modal';
 
-const QuestionForm: React.FC = () => {
+export interface IQuestionForm {
+  open: boolean;
+  onClose: () => void;
+}
+
+const QuestionForm: FC<IQuestionForm> = ({ open, onClose }) => {
+  const dispatch = useDispatch();
   const [question, setQuestion] = useState<IQuestion>({
     _id: "",
     title: "",
     body: "",
     tags: [],
-    user: "",
+    user: {
+      username: "",
+      _id: "",
+    },
   });
 
   const availableTags = ["React", "JavaScript", "CSS", "HTML", "TypeScript"]; // Example tag list
@@ -41,8 +53,8 @@ const QuestionForm: React.FC = () => {
 
   const handleQuestionAdd = async (e: React.FormEvent) => {
     e.preventDefault();
-    const res = await axiosPost("/api/questions", question);
-    console.log(res.data);
+    await addQuestion(question, dispatch);
+    onClose();
   };
 
   function removeTag(tag: string): void {
@@ -52,6 +64,7 @@ const QuestionForm: React.FC = () => {
   }
 
   return (
+    <Modal show={open} onHide={onClose}>
     <Form onSubmit={handleQuestionAdd}>
       <Form.Group className="mb-3" controlId="formBasicTitle">
         <Form.Label>Title</Form.Label>
@@ -104,6 +117,7 @@ const QuestionForm: React.FC = () => {
         Add Question
       </Button>
     </Form>
+    </Modal>
   );
 };
 

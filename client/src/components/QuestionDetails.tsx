@@ -1,18 +1,17 @@
-import React from "react";
+import { FC } from "react";
 import { IQuestion } from "../interface/questionInterface";
 import { Card } from "react-bootstrap";
 
-const QuestionDetails: React.FC<IQuestion> = (q) => {
- 
+const QuestionDetails: FC<{ question: IQuestion }> = ({ question }) => {
   return (
     <Card style={{ width: "18rem" }}>
       <Card.Body>
-        <Card.Title>{q.title}</Card.Title>
+        <Card.Title>{question.title}</Card.Title>
         <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
-        <Card.Text>{q.question}</Card.Text>
+        <Card.Text>{question.body}</Card.Text>
       </Card.Body>
       <Card.Footer className="text-muted">
-        {q.date?.toISOString()} by {q.user}
+        {question.updatedAt?.toString()} by {question.user.username}
       </Card.Footer>
     </Card>
   );
