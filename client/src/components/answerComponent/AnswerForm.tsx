@@ -15,9 +15,7 @@ export interface IModalProps {
 
 const AnswerForm: FC<IModalProps> = ({ open, onClose, questionId }) => {
   const dispatch = useDispatch();
-
   const [answer, setAnswer] = useState<IAnswer>(initialAnswerState(questionId));
-
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -31,9 +29,8 @@ const AnswerForm: FC<IModalProps> = ({ open, onClose, questionId }) => {
 
     setIsSubmitting(true);
     setError(null);
-
     try {
-      await addAnswer(answer, dispatch);
+      await addAnswer(answer, questionId, dispatch);
       setAnswer(initialAnswerState(questionId));
       onClose();
     } catch (err: any) {

@@ -11,6 +11,10 @@ export const questionSlice = createSlice({
       state = action.payload;
       return state;
     },
+    addQuestion: (state, action) => {
+      state.push(action.payload);
+      return state;
+    },
   },
 });
 

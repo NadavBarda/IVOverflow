@@ -11,7 +11,7 @@ export interface IAnswer {
   dislikes: number;
   createdAt: Date | null;
   updatedAt: Date | null;
-  questionId: string;
+  question: string;
 }
 
 export interface IQuestion {

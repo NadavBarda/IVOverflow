@@ -1,8 +1,12 @@
+import { setAnswers } from "../features/answer/answerSlice";
 import { IAnswer } from "../interface/questionInterface";
+import { AppDispatch } from "../redux/store";
+import { axiosGet, axiosPost } from "./axiosConfig";
 
-export const initialAnswerState = (id: string): IAnswer => {
+
+export const initialAnswerState = (questionId: string): IAnswer => {
   return {
-    _id: id,
+    _id: "",
     body: "",
     user: {
       username: "",
@@ -12,16 +16,32 @@ export const initialAnswerState = (id: string): IAnswer => {
     dislikes: 0,
     createdAt: null,
     updatedAt: null,
-    questionId: "",
+    question: questionId,
   };
 };
 
-export const getAnswers = async (id: string, dispatch: any) => {
-  //   const res = await axiosGet(`/api/answers/${id}/answers`);
-  //   dispatch(setAnswers(res.data));
-  //   return res.data;
+export const getAnswers = async (questionId: string, dispatch: AppDispatch) => {
+  const res = await axiosGet(`/api/answers/${questionId}`);
+  dispatch(setAnswers(res.data));
+  return res.data;
 };
-export const addAnswer = async (answer: IAnswer, dispatch: any) => {
-  // await axiosPost("/api/answers", answer);
-  // await getAnswers(dispatch);
+export const addAnswer = async (
+  answer: IAnswer,
+  questionId: string,
+  dispatch: AppDispatch
+) => {
+  await axiosPost(`/api/answers/${questionId}`, answer);
+  await getAnswers(questionId, dispatch);
+};
+
+
+
+export const responeToAnswer = async (
+  answerId: string,
+  questionId: string,
+  type: string,
+  dispatch: AppDispatch
+) => {
+  await axiosPost(`/api/answers/${answerId}/${type}`, {});
+  await getAnswers(questionId, dispatch);
 };

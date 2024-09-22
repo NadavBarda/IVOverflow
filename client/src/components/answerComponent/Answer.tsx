@@ -1,54 +1,54 @@
 // src/components/Answer.tsx
 
 import { FC } from "react";
-import { Card, Button, Badge } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { format } from "date-fns";
 import { IAnswer } from "../../interface/questionInterface";
+import { FaUser } from "react-icons/fa";
+import { responeToAnswer } from "../../services/answerServices";
+import { useDispatch } from "react-redux";
 
-const Answer: FC<IAnswer> = ({ body, user, likes, dislikes, createdAt }) => {
+const Answer: FC<IAnswer> = (answer) => {
   const formattedCreatedAt = () => {
-    if (!createdAt) {
+    if (!answer.createdAt) {
       return "";
     }
-    return format(new Date(createdAt), "MMMM dd, yyyy 'at' HH:mm");
+    return format(new Date(answer.createdAt), "MMMM dd, yyyy 'at' HH:mm");
   };
-  const handleLike = () => {
-    console.log("Liked the answer");
+  const dispatch = useDispatch();
+  const handleLike = async () => {
+    await responeToAnswer(answer._id, answer.question, "like", dispatch);
   };
 
-  const handleDislike = () => {
-    console.log("Disliked the answer");
+  const handleDislike = async () => {
+    await responeToAnswer(answer._id, answer.question, "dislike", dispatch);
   };
 
   return (
-    <Card className="mb-3 shadow-sm">
-      <Card.Body>
-        <Card.Text>{body}</Card.Text>
-      </Card.Body>
-      <Card.Footer className="d-flex justify-content-between align-items-center">
-        <div>
-          <Badge bg="secondary" className="me-2">
-            {user.username}
-          </Badge>
-          <span className="text-muted me-2">
-            answered on {formattedCreatedAt()}
-          </span>
-        </div>
-        <div>
-          <Button
-            variant="outline-success"
-            size="sm"
-            className="me-2"
-            onClick={handleLike}
-          >
-            👍 {likes}
+    <div className="answer mb-3 card p-0">
+      <div className="card-body">
+        <p className="card-text">{answer.body}</p>
+        <div className="like-btn">
+          <Button variant="success" onClick={handleLike}>
+            👍
+            {answer.likes}
           </Button>
-          <Button variant="outline-danger" size="sm" onClick={handleDislike}>
-            👎 {dislikes}
+          <Button variant="danger" onClick={handleDislike}>
+            👿
+            {answer.dislikes}
           </Button>
         </div>
-      </Card.Footer>
-    </Card>
+      </div>
+      <div className="card-footer">
+        <div className="d-flex justify-content-between">
+          <div className="d-flex align-items-center">
+            <FaUser size={14} className="me-2" />
+            <p className="mb-0">{answer.user.username}</p>
+            <p className="mb-0 ms-2 ">{formattedCreatedAt()}</p>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

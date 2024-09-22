@@ -15,7 +15,6 @@ export const addQuestion = async (question: any, dispatch: any) => {
 
 export const getQuestion = async (id: string) => {
   const res = await axiosGet(`/api/questions/${id}`);
-  //dispatch(setQuestion(res.data));
   return res.data;
 }
 

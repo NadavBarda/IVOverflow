@@ -5,12 +5,15 @@ import { format } from "date-fns";
 import { useNavigate, useParams } from "react-router-dom";
 import { getQuestion } from "../../services/questionServices";
 import AnswerList from "../../components/answerComponent/AnswerList";
+import { setAnswers } from "../../features/answer/answerSlice";
+import { useDispatch } from "react-redux";
 
 const QuestionPage: FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [question, setQuestion] = useState<IQuestion | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!id) {
@@ -21,6 +24,7 @@ const QuestionPage: FC = () => {
     const fetchQuestion = async () => {
       try {
         const q = await getQuestion(id);
+        dispatch(setAnswers(q.answers));
         setQuestion(q);
       } catch (err) {
         console.error("Error fetching the question:", err);
@@ -75,7 +79,7 @@ const QuestionPage: FC = () => {
       </Card>
 
       <div className="answers">
-        <AnswerList answers={question.answers} questionId={question._id} />
+        <AnswerList key={question._id} questionId={question._id} />
       </div>
     </>
   );

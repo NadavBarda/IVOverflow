@@ -3,7 +3,7 @@ import { Question } from "../models/questionModel";
 import { Answer } from "../models/answerModel";
 import { User } from "../models/userModel";
 import { Request, Response } from "express";
-import mongoose from "mongoose";
+
 
 const getQuestions = asyncHandler(async (req: Request, res: Response) => {
   const questions = await Question.find();
