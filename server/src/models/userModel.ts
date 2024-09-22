@@ -29,6 +29,24 @@ const UserSchema = new mongoose.Schema(
         ref: "Question",
       },
     ],
+    favoriteQuestions: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Question",
+      },
+    ],
+    likedAnswers: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Answer",
+      },
+    ],
+    dislikedAnswers: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Answer",
+      },
+    ],
   },
   {
     timestamps: true,
