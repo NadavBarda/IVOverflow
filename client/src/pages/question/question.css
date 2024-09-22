@@ -7,3 +7,11 @@
   width: 100%;
   text-align: right;
 }
+
+.question-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 1rem;
+}

@@ -10,18 +10,34 @@ export interface ErrorList {
   password?: string;
 }
 
+interface LoginResponse {
+  token: string;
+  user: {
+    id: string;
+    username: string;
+    email: string;
+  };
+}
+
 const login = async (
   username: string,
   password: string
-): Promise<AxiosResponse<any, any>> => {
-  const res = await axiosPost("/api/users/login", {
-    username,
-    password,
-  });
-  return res.data;
+): Promise<LoginResponse | null> => {
+  try {
+    const res: AxiosResponse<LoginResponse> = await axiosPost(
+      "/api/users/login",
+      { username, password }
+    );
+    return res.data;
+  } catch (error) {
+    console.error("Login error:", error);
+    return null;
+  }
 };
 
-const validateUser = (user: RegisterUser) : { errors: ErrorList; isValid: boolean } => {
+const validateUser = (
+  user: RegisterUser
+): { errors: ErrorList; isValid: boolean } => {
   const errors: ErrorList = {};
   if (!user.firstName) errors.firstName = "First name is required.";
   if (!user.lastName) errors.lastName = "Last name is required.";

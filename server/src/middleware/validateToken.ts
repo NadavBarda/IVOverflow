@@ -20,8 +20,7 @@ const validateToken = asyncHandler(
         process.env.ACCESS_TOKEN_SECRET as string,
         (err, decoded) => {
           if (err) {
-            res.status(401);
-            throw new Error("User is not authorized");
+            res.status(401).json({ message: "Unauthorized" });
           }
           const decode = decoded as JwtPayload;
           req.body.user = decode.user;
@@ -29,8 +28,7 @@ const validateToken = asyncHandler(
         }
       );
     } else {
-      res.status(401);
-      throw new Error("User is not authorized or token is missing");
+      res.status(401).json({ message: "Unauthorized" });
     }
   }
 );

@@ -2,17 +2,16 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch} from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { clearUser } from "../../features/user/userSlice";
-import { RootState } from "../../redux/store";
+
 import './NavBar.css'
 
 function NavBar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const username = useSelector((state: RootState) => state.user.user.username);
-  
+  const token = localStorage.getItem("token");
 
   const logout = () => {
     localStorage.clear();
@@ -21,10 +20,10 @@ function NavBar() {
   };
 
   return (
-    <Navbar expand="lg" className="bg-body-tertiary navBar">
+    <Navbar expand="lg" className="bg-body-tertiary shadow navBar">
       <Container>
         <Navbar.Brand as={Link} to={"/"}>
-          IVOverflow
+          IVOverflow.
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
@@ -36,7 +35,7 @@ function NavBar() {
               Questions
             </Nav.Link>
             <NavDropdown title="More" id="basic-nav-dropdown">
-              {username ? (
+              {token ? (
                 <>
                   <NavDropdown.Item as={Link} to={"/profile"}>
                     My Profile

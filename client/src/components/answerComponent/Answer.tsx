@@ -1,4 +1,3 @@
-// src/components/Answer.tsx
 
 import { FC } from "react";
 import { Button } from "react-bootstrap";
@@ -27,13 +26,16 @@ const Answer: FC<IAnswer> = (answer) => {
   return (
     <div className="answer mb-3 card p-0">
       <div className="card-body">
-        <p className="card-text">{answer.body}</p>
-        <div className="like-btn">
-          <Button variant="success" onClick={handleLike}>
+        <div className="mb-3 fw-semibold">
+          <p className="card-text">{answer.body}</p>
+        </div>
+
+        <div className="d-flex justify-content-start align-items-end">
+          <Button variant="outline-success" onClick={handleLike}>
             👍
             {answer.likes}
           </Button>
-          <Button variant="danger" onClick={handleDislike}>
+          <Button variant="outline-danger " onClick={handleDislike}>
             👿
             {answer.dislikes}
           </Button>

@@ -4,6 +4,7 @@ import { IQuestion } from "../../interface/questionInterface";
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import { FaComment, FaUser } from "react-icons/fa";
+import { Tags } from "../general/Tags";
 
 const QuestionListItem: FC<{ question: IQuestion }> = ({ question }) => {
   const navigate = useNavigate();
@@ -26,34 +27,20 @@ const QuestionListItem: FC<{ question: IQuestion }> = ({ question }) => {
       aria-label={`View details for question titled ${question.title}`}
     >
       <Card.Body>
-        <Row>
-          <Card.Text className="" title={question.body}>
-            {questionBody}
-          </Card.Text>
-          <div className="mb-2">
-            {question.tags?.map((tag) => (
-              <Badge
-                bg="primary"
-                pill
-                key={tag}
-                className="me-1"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  navigate(`/tags/${tag}`);
-                }}
-                style={{ cursor: "pointer" }}
-              >
-                {tag}
-              </Badge>
-            ))}
+        <Card.Text className="" title={question.body}>
+          <div className="fw-bold mb-2 text-secondary text-decoration-underline">
+            Question:
           </div>
-          <Col className="text-end ">
-            <div>
-              <FaComment className="me-1" />
-              {question.answers?.length || 0} Answers
-            </div>
-          </Col>
-        </Row>
+          <div className="fw-semibold"> {questionBody}</div>
+        </Card.Text>
+
+        <div className="d-flex justify-content-end align-items-end">
+          <FaComment className="me-1" />
+          {question.answers?.length || 0} Answers
+        </div>
+        <div className="justify-content-end align-items-end">
+          {question.tags && <Tags tags={question.tags}></Tags>}
+        </div>
       </Card.Body>
       <Card.Footer className="text-muted">
         <Card.Subtitle className="">

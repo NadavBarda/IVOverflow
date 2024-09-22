@@ -38,7 +38,7 @@ const QuestionsPage: React.FC = () => {
   const closeQuestionDialog = () => setIsQuestionDialogOpen(false);
 
   return (
-    <div className="questionPage page">
+    <div className="question-page page">
       <div className="buttonsGroup">
         <Button onClick={openQuestionDialog}>Add Question</Button>
       </div>

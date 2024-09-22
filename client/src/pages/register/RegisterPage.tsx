@@ -40,7 +40,9 @@ const RegisterPage: React.FC = () => {
   };
 
   return (
-    <div className="page">
+    <div className="page register-page">
+
+      <h1 className="logo">Welcome to IVOverflow.</h1>
       <Form onSubmit={handleRegister}>
         <Form.Group className="mb-3" controlId="formBasicUsername">
           <Form.Label>Username</Form.Label>
@@ -117,8 +119,8 @@ const RegisterPage: React.FC = () => {
         </Button>
       </Form>
 
-      <div>
-        <p>
+      <div className="link mt-3">
+        <p className="mb-0">
           Already have an account? <Link to="/">Login</Link>
         </p>
       </div>

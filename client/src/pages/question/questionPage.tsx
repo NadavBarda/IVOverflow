@@ -7,6 +7,7 @@ import { getQuestion } from "../../services/questionServices";
 import AnswerList from "../../components/answerComponent/AnswerList";
 import { setAnswers } from "../../features/answer/answerSlice";
 import { useDispatch } from "react-redux";
+import { Tags } from "../../components/general/Tags";
 
 const QuestionPage: FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -61,27 +62,26 @@ const QuestionPage: FC = () => {
   }
 
   return (
-    <>
-      <Card className="mb-3 shadow-sm question">
+    <div className="page">
+      <Card className="mb-3 shadow-sm question ">
         <Card.Body>
-          <Card.Title>{question.title}</Card.Title>
-          <Card.Subtitle className="mb-2 text-muted">
-            Asked by {question.user?.username || "Unknown user"} on{" "}
-            {formattedDate}
-          </Card.Subtitle>
+          <Card.Title className="mb-2 text-decoration-underline">
+            {question.title}
+          </Card.Title>
+          <Card.Subtitle className="mb-2 text-muted"></Card.Subtitle>
           <Card.Text>{question.body}</Card.Text>
-          {question.tags && question.tags.length > 0 && (
-            <Card.Text>
-              <strong>Tags:</strong> {question.tags.join(", ")}
-            </Card.Text>
-          )}
+          {question.tags && <Tags tags={question.tags}></Tags>}
         </Card.Body>
+        <Card.Footer>
+          Asked by {question.user?.username}
+          {formattedDate}
+        </Card.Footer>
       </Card>
 
       <div className="answers">
         <AnswerList key={question._id} questionId={question._id} />
       </div>
-    </>
+    </div>
   );
 };
 
