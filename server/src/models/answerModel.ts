@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { IAnswer } from "../interface/questionInterface";
 
 const AnswerSchema = new mongoose.Schema(
   {
@@ -22,4 +23,4 @@ const AnswerSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export const Answer = mongoose.model("Answer", AnswerSchema);
+export const Answer = mongoose.model<IAnswer>("Answer", AnswerSchema);

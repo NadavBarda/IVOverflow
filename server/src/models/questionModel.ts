@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
-import { Answer } from "./answerModel";
+import { IQuestion } from "../interface/questionInterface";
+
 
 const QuestionSchema = new mongoose.Schema(
   {
@@ -49,4 +50,4 @@ const QuestionSchema = new mongoose.Schema(
   }
 );
 
-export const Question = mongoose.model("Question", QuestionSchema);
+export const Question = mongoose.model<IQuestion>("Question", QuestionSchema);

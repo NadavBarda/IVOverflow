@@ -3,19 +3,20 @@ interface IUserQuestion {
   username: string;
 }
 
-interface IAnswer {
+export interface IAnswer {
+  _id: string;
   body: string;
   user: IUserQuestion;
   likes: number;
   dislikes: number;
-  question: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: Date | null;
+  updatedAt: Date | null;
+  questionId: string;
 }
 
 export interface IQuestion {
   updatedAt?: Date;
-  _id?: string;
+  _id: string;
   title: string;
   body: string;
   user: IUserQuestion;

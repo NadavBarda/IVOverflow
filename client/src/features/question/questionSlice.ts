@@ -7,12 +7,12 @@ export const questionSlice = createSlice({
   name: "questions",
   initialState,
   reducers: {
-    setQuestion: (state, action) => {
+    setQuestions: (state, action) => {
       state = action.payload;
       return state;
     },
   },
 });
 
-export const { setQuestion } = questionSlice.actions;
+export const { setQuestions } = questionSlice.actions;
 export default questionSlice.reducer;

@@ -1,5 +1,5 @@
-
-import { Document, Types} from 'mongoose';
+import { Document, Types } from "mongoose";
+import { IQuestion } from "./questionInterface";
 
 export interface IUser extends Document {
   _id: Types.ObjectId;
@@ -9,5 +9,5 @@ export interface IUser extends Document {
   email: string;
   password: string;
   createdAt: Date;
-  myQuestions: Types.ObjectId[];
+  myQuestions: Types.ObjectId[] | IQuestion[];
 }

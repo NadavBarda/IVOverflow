@@ -15,6 +15,7 @@ function validateLoginInput(req: Request, res: Response) {
 
 async function findUser(username: string, res: Response) {
   const user = await User.findOne({ username }).exec();
+
   if (!user) {
     res.status(404).json({ message: "User not found" });
     return null;

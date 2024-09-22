@@ -16,12 +16,13 @@ const login = asyncHandler(async (req: Request, res: Response) => {
   const { username, password } = input;
   const user = await findUser(username, res);
   if (!user) return;
-
   const isPasswordValid = await comparePassword(password, user.password, res);
   if (!isPasswordValid) return;
 
   const token = generateToken(user, res);
   if (!token) return;
+
+
   const userData = {
     username: user.username,
     id: user._id.toString(),
@@ -37,7 +38,7 @@ const register = asyncHandler(async (req: Request, res: Response) => {
     return;
   }
 
-  const duplicate = await User.findOne({ email }).exec();
+  const duplicate = await User.findOne({ email, username }).exec();
   if (duplicate) {
     res.status(409).json({ message: "User already exists" });
     return;
