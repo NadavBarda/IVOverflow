@@ -3,11 +3,13 @@ import { FC, useState } from "react";
 import { IQuestion } from "../../interface/questionInterface";
 import {
   addQuestion,
+  availableTags,
   initialQuestionState,
 } from "../../services/questionServices";
 import { useDispatch } from "react-redux";
 import Modal from "react-bootstrap/Modal";
 import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
+import SelectedTags from "../general/SelectedTags";
 
 export interface IQuestionForm {
   open: boolean;
@@ -15,13 +17,12 @@ export interface IQuestionForm {
 }
 
 const MAX_TAGS_LIMIT = 3;
-const availableTags = ["React", "JavaScript", "CSS", "HTML", "TypeScript"]; // Example tag list
 
 const QuestionForm: FC<IQuestionForm> = ({ open, onClose }) => {
   const dispatch = useDispatch();
   const [question, setQuestion] = useState<IQuestion>(initialQuestionState);
   const [tagLimitReached, setTagLimitReached] = useState(false);
-  const authHeader  = useAuthHeader() as string;
+  const authHeader = useAuthHeader() as string;
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -56,7 +57,7 @@ const QuestionForm: FC<IQuestionForm> = ({ open, onClose }) => {
 
   const handleQuestionAdd = async (e: React.FormEvent) => {
     e.preventDefault();
-    await addQuestion({question, dispatch, authHeader});
+    await addQuestion({ question, dispatch, authHeader });
     setQuestion(initialQuestionState);
     onClose();
   };
@@ -115,21 +116,7 @@ const QuestionForm: FC<IQuestionForm> = ({ open, onClose }) => {
             )}
           </Form.Group>
 
-          <div className="selected-tags">
-            <strong>Selected Tags:</strong>
-            <div className="d-flex gap-2 mt-2">
-              {question.tags?.map((tag, index) => (
-                <Button
-                  key={index}
-                  variant="secondary"
-                  onClick={() => removeTag(tag)}
-                  className="tag-btn"
-                >
-                  {tag} <span>&times;</span>
-                </Button>
-              ))}
-            </div>
-          </div>
+          <SelectedTags tags={question.tags} removeTag={removeTag} ></SelectedTags>
 
           <Button variant="primary" type="submit" className="mt-3">
             Add Question

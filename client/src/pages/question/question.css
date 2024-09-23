@@ -1,17 +1,24 @@
 .buttonsGroup {
-  position: sticky;
-  display: inline-block;
   right: 0;
   height: 0;
   z-index: 1;
-  width: 100%;
   text-align: right;
 }
 
-.question-page {
+.filter-group {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: center;
-  padding: 1rem;
+  align-items:start;
+  gap: 1rem;
+  margin-bottom: 1rem;
 }
+
+.filter-container{
+  
+  background-color: aliceblue;
+  padding: 0.5rem;
+  padding-top: 0rem;
+  border-radius: 0.5rem;
+}
+
