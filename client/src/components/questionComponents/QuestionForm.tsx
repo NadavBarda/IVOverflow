@@ -7,6 +7,7 @@ import {
 } from "../../services/questionServices";
 import { useDispatch } from "react-redux";
 import Modal from "react-bootstrap/Modal";
+import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
 
 export interface IQuestionForm {
   open: boolean;
@@ -20,6 +21,7 @@ const QuestionForm: FC<IQuestionForm> = ({ open, onClose }) => {
   const dispatch = useDispatch();
   const [question, setQuestion] = useState<IQuestion>(initialQuestionState);
   const [tagLimitReached, setTagLimitReached] = useState(false);
+  const authHeader  = useAuthHeader() as string;
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -54,7 +56,7 @@ const QuestionForm: FC<IQuestionForm> = ({ open, onClose }) => {
 
   const handleQuestionAdd = async (e: React.FormEvent) => {
     e.preventDefault();
-    await addQuestion(question, dispatch);
+    await addQuestion({question, dispatch, authHeader});
     setQuestion(initialQuestionState);
     onClose();
   };

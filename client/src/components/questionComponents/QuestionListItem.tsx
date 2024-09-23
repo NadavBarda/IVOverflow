@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Card, Badge, Row, Col } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 import { IQuestion } from "../../interface/questionInterface";
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
@@ -19,7 +19,6 @@ const QuestionListItem: FC<{ question: IQuestion }> = ({ question }) => {
   const handleCardClick = () => {
     navigate(`/questions/${question._id}`);
   };
-
   return (
     <Card
       className="mb-3 shadow-lg"

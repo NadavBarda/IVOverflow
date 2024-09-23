@@ -2,9 +2,11 @@ import { useState } from "react";
 import "./register.css";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import { ErrorList, register, validateUser } from "../../services/userServices";
+import { ErrorList,  validateUser } from "../../services/userServices";
 import { Link, useNavigate } from "react-router-dom";
 import { RegisterUser } from "../../interface/userInterface";
+import { axiosPost } from "../../services/axiosConfig";
+import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
 
 const RegisterPage: React.FC = () => {
   const [errorList, setErrorList] = useState<ErrorList>({});
@@ -23,7 +25,11 @@ const RegisterPage: React.FC = () => {
     setErrorList(validations.errors);
     if (!validations.isValid) return;
     try {
-      const res = await register(user);
+      const res = await axiosPost({
+        url: "/api/users/register",
+        authHeader: useAuthHeader(),
+        data: user,
+      });
       if (res.status === 201) {
         navigate("/login");
       } else {
@@ -41,7 +47,6 @@ const RegisterPage: React.FC = () => {
 
   return (
     <div className="page register-page">
-
       <h1 className="logo">Welcome to IVOverflow.</h1>
       <Form onSubmit={handleRegister}>
         <Form.Group className="mb-3" controlId="formBasicUsername">

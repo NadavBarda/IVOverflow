@@ -7,10 +7,12 @@ import { axiosGet } from "../../services/axiosConfig";
 import { setQuestions } from "../../features/question/questionSlice";
 import QuestionForm from "../../components/questionComponents/QuestionForm";
 import QuestionList from "../../components/questionComponents/QuestionList";
+import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
 
 const QuestionsPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const authHeader = useAuthHeader();
   const [isQuestionDialogOpen, setIsQuestionDialogOpen] =
     useState<boolean>(false);
 
@@ -25,7 +27,10 @@ const QuestionsPage: React.FC = () => {
     setLoading(true);
     setError(null);
     try {
-      const res = await axiosGet("/api/questions");
+      const res = await axiosGet({
+        url: "/api/questions",
+        authHeader: authHeader,
+      });
       dispatch(setQuestions(res.data));
     } catch (err) {
       setError("Failed to load questions.");

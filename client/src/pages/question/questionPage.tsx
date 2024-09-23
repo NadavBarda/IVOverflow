@@ -8,6 +8,7 @@ import AnswerList from "../../components/answerComponent/AnswerList";
 import { setAnswers } from "../../features/answer/answerSlice";
 import { useDispatch } from "react-redux";
 import { Tags } from "../../components/general/Tags";
+import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
 
 const QuestionPage: FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -15,6 +16,7 @@ const QuestionPage: FC = () => {
   const [question, setQuestion] = useState<IQuestion | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
+  const authHeader = useAuthHeader();
 
   useEffect(() => {
     if (!id) {
@@ -24,9 +26,12 @@ const QuestionPage: FC = () => {
 
     const fetchQuestion = async () => {
       try {
-        const q = await getQuestion(id);
-        dispatch(setAnswers(q.answers));
+        if (!authHeader) {
+          return;
+        }
+        const q = await getQuestion({ id, authHeader, dispatch });
         setQuestion(q);
+        dispatch(setAnswers(q.answers));
       } catch (err) {
         console.error("Error fetching the question:", err);
       } finally {

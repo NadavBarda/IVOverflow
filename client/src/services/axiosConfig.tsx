@@ -1,63 +1,89 @@
-import axios, { AxiosRequestConfig } from "axios";
+import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
-const instance = axios.create({
+// Function to check if token is expired
+const checkTokenExpiration = (authHeader: string | null) => {
+  const token = authHeader?.split(" ")[1];
+  if (!token) {
+    return false;
+  }
+
+  try {
+    const decodedToken = jwtDecode(token);
+    if (!decodedToken.exp) {
+      return false;
+    }
+    const expirationDate = new Date(decodedToken.exp * 1000);
+
+    if (expirationDate < new Date()) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    return false;
+  }
+};
+
+export interface AxData {
+  url: string;
+  data?: any;
+  authHeader: string | null;
+}
+
+const ax = axios.create({
   baseURL: "http://localhost:3001",
 });
 
-const getToken = () => {
-  return localStorage.getItem("token")
-    ? "Bearer " + localStorage.getItem("token")
-    : null;
-};
+const axiosGet = async ({ url, authHeader }: AxData): Promise<any> => {
+  const isExpired = checkTokenExpiration(authHeader);
 
-const axiosGet = async (url: string, config?: AxiosRequestConfig) => {
-  const token = getToken();
-  return await instance.get(url, {
-    ...config,
+  if (isExpired) {
+    return;
+  }
+  const token = authHeader ? authHeader : null;
+
+  return await ax.get(url, {
     headers: {
-      ...config?.headers,
       Authorization: token,
     },
   });
 };
 
-const axiosDelete = async (url: string, config?: AxiosRequestConfig) => {
-  const token = getToken();
-
-  return await instance.delete(url, {
-    ...config,
+const axiosDelete = async ({ url, authHeader }: AxData): Promise<any> => {
+  const isExpired = checkTokenExpiration(authHeader);
+  if (isExpired) {
+    return;
+  }
+  const token = authHeader ? authHeader : null;
+  return await ax.delete(url, {
     headers: {
-      ...config?.headers,
       Authorization: token,
     },
   });
 };
 
-const axiosPost = async (
-  url: string,
-  data: any,
-  config?: AxiosRequestConfig
-) => {
-  const token = getToken();
-  return await instance.post(url, data, {
-    ...config,
+const axiosPost = async ({ url, authHeader, data }: AxData): Promise<any> => {
+  const isExpired = checkTokenExpiration(authHeader);
+  if (isExpired) {
+    return;
+  }
+  const token = authHeader ? authHeader : null;
+  return await ax.post(url, data, {
     headers: {
-      ...config?.headers,
       Authorization: token,
     },
   });
 };
 
-const axiosPut = async (
-  url: string,
-  data: any,
-  config?: AxiosRequestConfig
-) => {
-  const token = getToken();
-  return await instance.put(url, data, {
-    ...config,
+const axiosPut = async ({ url, authHeader, data }: AxData): Promise<any> => {
+  const isExpired = checkTokenExpiration(authHeader);
+  if (isExpired) {
+    return;
+  }
+  const token = authHeader ? authHeader : null;
+  return await ax.put(url, data, {
     headers: {
-      ...config?.headers,
       Authorization: token,
     },
   });

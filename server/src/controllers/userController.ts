@@ -19,10 +19,14 @@ const login = asyncHandler(async (req: Request, res: Response) => {
   const isPasswordValid = await comparePassword(password, user.password, res);
   if (!isPasswordValid) return;
 
-  const token = generateToken(user, res);
-  if (!token) return;
-
-  res.status(200).json({ token, user });
+  const genToken = generateToken(user, res);
+  if (!genToken) {
+    res.status(500).json({ message: "Internal server error" });
+    return;
+  }
+  res
+    .status(200)
+    .json({ token: genToken.token, user, tokenExpiresIn: genToken.expiresIn });
 });
 
 const register = asyncHandler(async (req: Request, res: Response) => {

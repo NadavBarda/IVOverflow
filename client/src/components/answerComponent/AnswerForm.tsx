@@ -6,6 +6,7 @@ import { IAnswer } from "../../interface/questionInterface";
 import { addAnswer, initialAnswerState } from "../../services/answerServices";
 import { useDispatch } from "react-redux";
 import Modal from "react-bootstrap/Modal";
+import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
 
 export interface IModalProps {
   open: boolean;
@@ -18,10 +19,11 @@ const AnswerForm: FC<IModalProps> = ({ open, onClose, questionId }) => {
   const [answer, setAnswer] = useState<IAnswer>(initialAnswerState(questionId));
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const authHeader = useAuthHeader();
 
   const handleAnswerAdd = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    
     if (!answer.body.trim()) {
       setError("Answer body cannot be empty.");
       return;
@@ -30,7 +32,8 @@ const AnswerForm: FC<IModalProps> = ({ open, onClose, questionId }) => {
     setIsSubmitting(true);
     setError(null);
     try {
-      await addAnswer(answer, questionId, dispatch);
+      if (!authHeader) return;
+      await addAnswer(answer, questionId, dispatch, authHeader);
       setAnswer(initialAnswerState(questionId));
       onClose();
     } catch (err: any) {

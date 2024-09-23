@@ -19,27 +19,40 @@ export const initialAnswerState = (questionId: string): IAnswer => {
   };
 };
 
-export const getAnswers = async (questionId: string, dispatch: AppDispatch) => {
-  const res = await axiosGet(`/api/answers/${questionId}`);
+export const getAnswers = async (
+  questionId: string,
+  dispatch: AppDispatch,
+  authHeader: string
+) => {
+  const res = await axiosGet({ url: `/api/answers/${questionId}`, authHeader });
   dispatch(setAnswers(res.data));
   return res.data;
 };
 export const addAnswer = async (
   answer: IAnswer,
   questionId: string,
-  dispatch: AppDispatch
+  dispatch: AppDispatch,
+  authHeader: string
 ) => {
-  await axiosPost(`/api/answers/${questionId}`, answer);
-  await getAnswers(questionId, dispatch);
+  await axiosPost({
+    url: `/api/answers/${questionId}`,
+    data: answer,
+    authHeader: authHeader,
+  });
+  await getAnswers(questionId, dispatch, authHeader);
 };
-
 
 export const responeToAnswer = async (
   answerId: string,
   questionId: string,
   type: string,
-  dispatch: AppDispatch
+  dispatch: AppDispatch,
+  authHeader: string
 ) => {
-  await axiosPost(`/api/answers/${answerId}/${type}`, {});
-  await getAnswers(questionId, dispatch);
+  await axiosPost({
+    url: `/api/answers/${answerId}/${type}`,
+    authHeader,
+    data: {},
+  });
+  await getAnswers(questionId, dispatch, authHeader);
 };

@@ -1,11 +1,14 @@
 import { useRef, FC, useState } from "react";
+import useSignIn from "react-auth-kit/hooks/useSignIn";
 import "./loginPage.css";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import { login } from "../../services/userServices";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../features/user/userSlice";
+import { axiosPost } from "../../services/axiosConfig";
+import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
+import { loginUser } from "../../services/userServices";
 
 const LoginPage: FC = () => {
   const usernameRef = useRef<HTMLInputElement>(null);
@@ -13,30 +16,73 @@ const LoginPage: FC = () => {
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const signIn = useSignIn();
+  const authHeader = useAuthHeader();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    const username = usernameRef.current?.value || "";
-    const password = passwordRef.current?.value || "";
 
-    if (!username || !password) {
+    const credentials = getCredentials();
+
+    if (!validateCredentials(credentials)) {
       setError("Please enter a username and password");
       return;
     }
-    const res = await login(username, password);
-    const userData = res?.data;
 
-    if (!userData) {
-      setError("Invalid username or password");
-      return;
+    try {
+      const userData = await loginUser(credentials);
+      if (!userData) {
+        setError("Invalid username or password");
+        return;
+      }
+      handleSuccess(userData);
+    } catch (error) {
+      handleError();
     }
+  };
 
+  const getCredentials = () => {
+    const username = usernameRef.current?.value || "";
+    const password = passwordRef.current?.value || "";
+
+    return { username, password };
+  };
+
+  const validateCredentials = ({
+    username,
+    password,
+  }: {
+    username: string;
+    password: string;
+  }) => {
+    return username && password;
+  };
+
+  const handleSuccess = (userData: any) => {
     setError(null);
     usernameRef.current!.value = "";
     passwordRef.current!.value = "";
-    localStorage.setItem("token", userData.token);
+
+    const token = userData.token;
+    if (token) {
+      signIn({
+        auth: {
+          token,
+          type: "Bearer",
+        },
+        userState: {
+          name: userData.user.username,
+          uid: userData.user._id,
+        },
+      });
+    }
+
     dispatch(setUser(userData.user));
     navigate("/question");
+  };
+
+  const handleError = () => {
+    setError("Invalid username or password");
   };
 
   return (

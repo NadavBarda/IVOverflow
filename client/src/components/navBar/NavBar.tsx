@@ -2,21 +2,24 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
-import { useDispatch} from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { clearUser } from "../../features/user/userSlice";
+import useSignOut from "react-auth-kit/hooks/useSignOut";
 
-import './NavBar.css'
+import "./NavBar.css";
+import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
 
 function NavBar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
+  const token = useAuthHeader();
+  const signOut = useSignOut();
 
   const logout = () => {
-    localStorage.clear();
     dispatch(clearUser());
-    navigate("/");
+    signOut();
+    navigate("/login");
   };
 
   return (

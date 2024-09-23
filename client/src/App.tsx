@@ -1,12 +1,14 @@
 import "./App.css";
 import { AppRoutes } from "./appRoutes/AppRoutes";
 
+import AuthProvider from "react-auth-kit";
+import { authStore } from "./appRoutes/authStore";
 
 function App() {
   return (
-    <div>
+    <AuthProvider store={authStore}>
       <AppRoutes />
-    </div>
+    </AuthProvider>
   );
 }
 
