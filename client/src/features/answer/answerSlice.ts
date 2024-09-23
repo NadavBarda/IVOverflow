@@ -11,12 +11,8 @@ export const answerSlice = createSlice({
       state = action.payload;
       return state;
     },
-    addAnswers: (state, action) => {
-      state.push(action.payload);
-      return state;
-    },
   },
 });
 
-export const { setAnswers, addAnswers } = answerSlice.actions;
+export const { setAnswers } = answerSlice.actions;
 export default answerSlice.reducer;

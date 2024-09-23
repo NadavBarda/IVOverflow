@@ -6,12 +6,19 @@ export interface RegisterUser {
   email: string;
 }
 
-export interface IUser {
-  id: string;
-  username: string;
-}
-
 export interface ILoginUser {
   user: IUser;
   token: string;
+}
+
+export interface IUser {
+  _id: string;
+  username: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  myQuestions: string[];
+  favoriteQuestions: string[];
+  likedAnswers: string[];
+  dislikedAnswers: string[];
 }

@@ -48,7 +48,6 @@ const QuestionPage: FC = () => {
     return (
       <div className="text-center my-5">
         <Spinner animation="border" variant="primary" />
-        <p>Loading question...</p>
       </div>
     );
   }

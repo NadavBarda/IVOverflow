@@ -1,4 +1,4 @@
-import { useRef, FC } from "react";
+import { useRef, FC, useState } from "react";
 import "./loginPage.css";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -10,6 +10,7 @@ import { setUser } from "../../features/user/userSlice";
 const LoginPage: FC = () => {
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -19,15 +20,22 @@ const LoginPage: FC = () => {
     const password = passwordRef.current?.value || "";
 
     if (!username || !password) {
-      console.log("Username or password is empty");
+      setError("Please enter a username and password");
+      return;
+    }
+    const res = await login(username, password);
+    const userData = res?.data;
+
+    if (!userData) {
+      setError("Invalid username or password");
       return;
     }
 
-    const userData = await login(username, password);
-    if (!userData) return;
-
+    setError(null);
+    usernameRef.current!.value = "";
+    passwordRef.current!.value = "";
     localStorage.setItem("token", userData.token);
-    dispatch(setUser(userData));
+    dispatch(setUser(userData.user));
     navigate("/question");
   };
 
@@ -48,10 +56,12 @@ const LoginPage: FC = () => {
             ref={passwordRef}
           />
         </Form.Group>
+        {error && <p className="error">{error}</p>}
         <Button variant="primary" type="submit">
           Submit
         </Button>
       </Form>
+
       <div className="mt-3">
         <p>
           Don't have an account? <Link to="/register">Register</Link>

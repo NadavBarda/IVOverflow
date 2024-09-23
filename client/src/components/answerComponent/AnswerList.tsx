@@ -8,7 +8,9 @@ import "./answer.css";
 
 const AnswerList: FC<{ questionId: string }> = ({ questionId }) => {
   const [isAnswerDialogOpen, setIsAnswerDialogOpen] = useState(false);
-  const answers = useSelector((state: RootState) => state.answers);
+  const answers = useSelector((state: RootState) => state.answers)
+    .slice()
+    .sort((a, b) => b.likes - a.likes);
 
   return (
     <Container>
@@ -30,7 +32,7 @@ const AnswerList: FC<{ questionId: string }> = ({ questionId }) => {
 
       <div className="answers">
         {answers.map((answer) => (
-          <Answer key={answer._id} {...answer} />
+          <Answer key={answer._id} answer={answer} />
         ))}
       </div>
     </Container>

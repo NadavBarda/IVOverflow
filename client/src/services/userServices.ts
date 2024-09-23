@@ -1,5 +1,5 @@
 import { AxiosResponse } from "axios";
-import { RegisterUser } from "../interface/userInterface";
+import { ILoginUser, RegisterUser } from "../interface/userInterface";
 import { axiosPost } from "./axiosConfig";
 
 export interface ErrorList {
@@ -10,25 +10,16 @@ export interface ErrorList {
   password?: string;
 }
 
-interface LoginResponse {
-  token: string;
-  user: {
-    id: string;
-    username: string;
-    email: string;
-  };
-}
-
 const login = async (
   username: string,
   password: string
-): Promise<LoginResponse | null> => {
+): Promise<AxiosResponse<ILoginUser> | null> => {
   try {
-    const res: AxiosResponse<LoginResponse> = await axiosPost(
-      "/api/users/login",
-      { username, password }
-    );
-    return res.data;
+    const res: AxiosResponse<ILoginUser> = await axiosPost("/api/users/login", {
+      username,
+      password,
+    });
+    return res;
   } catch (error) {
     console.error("Login error:", error);
     return null;

@@ -5,6 +5,7 @@ import { Answer } from "../models/answerModel";
 import { Request, Response } from "express";
 import { get } from "http";
 import { User } from "../models/userModel";
+import mongoose from "mongoose";
 
 export const getAnswers = asyncHandler(async (req: Request, res: Response) => {
   const questionId = req.params.id;
@@ -20,6 +21,78 @@ const getAnswerById = async (id: string) => {
   return answer;
 };
 
+const isRespondToAnswer = async (
+  answerId: string,
+  userId: string
+): Promise<"like" | "dislike" | ""> => {
+  const answerObjectId = new mongoose.Types.ObjectId(answerId);
+
+  const user = await User.findById(userId);
+  if (!user) {
+    return "";
+  }
+  if (user.likedAnswers.includes(answerObjectId)) {
+    return "like";
+  }
+  if (user.dislikedAnswers.includes(answerObjectId)) {
+    return "dislike";
+  }
+
+  return "";
+};
+
+const changeAnswerReaction = async (
+  answerId: string,
+  userId: string,
+  newReactionType: "like" | "dislike",
+  oldReactionType: "like" | "dislike"
+) => {
+  const answer = await getAnswerById(answerId);
+  
+  if (!answer) {
+    throw new Error("Answer not found");
+  }
+
+  const userRemoveField =
+    oldReactionType === "like" ? "likedAnswers" : "dislikedAnswers";
+
+  if (newReactionType === oldReactionType) {
+    await User.findByIdAndUpdate(userId, {
+      $pull: { [userRemoveField]: answerId },
+    });
+
+    if (oldReactionType === "like") {
+      answer.likes -= 1;
+    } else {
+      answer.dislikes -= 1;
+    }
+
+  } else {
+    const userPushfield =
+      newReactionType === "like" ? "likedAnswers" : "dislikedAnswers";
+
+    await User.findByIdAndUpdate(userId, {
+      $pull: { [userRemoveField]: answerId },
+      $push: { [userPushfield]: answerId },
+    });
+
+    if (newReactionType === "like") {
+      answer.likes += 1;
+      if (oldReactionType === "dislike") {
+        answer.dislikes -= 1;
+      }
+    } else if (newReactionType === "dislike") {
+      answer.dislikes += 1;
+      if (oldReactionType === "like") {
+        answer.likes -= 1;
+      }
+    }
+  }
+
+  await answer.save();
+};
+
+
 const handleAnswerReaction = async (
   req: Request,
   res: Response,
@@ -27,10 +100,15 @@ const handleAnswerReaction = async (
 ) => {
   const answerId = req.params.id;
   const userId = req.body.user.id;
-
   const answer = await getAnswerById(answerId);
+
+  const isRespond = await isRespondToAnswer(answerId, userId);
   if (!answer) {
     return res.status(404).json({ message: "Answer not found" });
+  }
+  if (isRespond) {
+    await changeAnswerReaction(answerId, userId, reactionType, isRespond);
+    return res.status(200).json(answer);
   }
   if (reactionType === "like") {
     answer.likes += 1;

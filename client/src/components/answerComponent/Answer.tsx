@@ -1,5 +1,4 @@
-
-import { FC } from "react";
+import { FC} from "react";
 import { Button } from "react-bootstrap";
 import { format } from "date-fns";
 import { IAnswer } from "../../interface/questionInterface";
@@ -7,7 +6,10 @@ import { FaUser } from "react-icons/fa";
 import { responeToAnswer } from "../../services/answerServices";
 import { useDispatch } from "react-redux";
 
-const Answer: FC<IAnswer> = (answer) => {
+
+const Answer: FC<{ answer: IAnswer }> = ({ answer }) => {
+  
+
   const formattedCreatedAt = () => {
     if (!answer.createdAt) {
       return "";
@@ -18,6 +20,7 @@ const Answer: FC<IAnswer> = (answer) => {
   const handleLike = async () => {
     await responeToAnswer(answer._id, answer.question, "like", dispatch);
   };
+
 
   const handleDislike = async () => {
     await responeToAnswer(answer._id, answer.question, "dislike", dispatch);
@@ -31,11 +34,17 @@ const Answer: FC<IAnswer> = (answer) => {
         </div>
 
         <div className="d-flex justify-content-start align-items-end">
-          <Button variant="outline-success" onClick={handleLike}>
+          <Button
+            variant="outline-success"
+            onClick={handleLike}
+          >
             👍
             {answer.likes}
           </Button>
-          <Button variant="outline-danger " onClick={handleDislike}>
+          <Button
+            variant="outline-danger"
+            onClick={handleDislike}
+          >
             👿
             {answer.dislikes}
           </Button>

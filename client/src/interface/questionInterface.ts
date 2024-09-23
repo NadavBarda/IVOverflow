@@ -9,8 +9,8 @@ export interface IAnswer {
   user: IUserQuestion;
   likes: number;
   dislikes: number;
-  createdAt: Date | null;
-  updatedAt: Date | null;
+  createdAt?: string;
+  updatedAt?: string;
   question: string;
 }
 

@@ -22,12 +22,7 @@ const login = asyncHandler(async (req: Request, res: Response) => {
   const token = generateToken(user, res);
   if (!token) return;
 
-
-  const userData = {
-    username: user.username,
-    id: user._id.toString(),
-  };
-  res.status(200).json({ token, user: userData });
+  res.status(200).json({ token, user });
 });
 
 const register = asyncHandler(async (req: Request, res: Response) => {

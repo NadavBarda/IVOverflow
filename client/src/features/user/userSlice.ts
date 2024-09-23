@@ -1,21 +1,28 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { ILoginUser } from "../../interface/userInterface";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { IUser } from "../../interface/userInterface";
 
-const initialState = {
-  user: { id: "", username: "" },
-  token: "",
-} as ILoginUser;
+const initialState: IUser = {
+  _id: "",
+  username: "",
+  firstName: "",
+  lastName: "",
+  email: "",
+  myQuestions: [],
+  favoriteQuestions: [],
+  likedAnswers: [],
+  dislikedAnswers: [],
+};
 export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    setUser: (state, action) => {
-      state.user = action.payload.user;
-      state.token = action.payload.token;
+    setUser: (state, action: PayloadAction<IUser>) => {
+      state = action.payload;
+      return state;
     },
     clearUser: (state) => {
-      state.user = { id: "", username: "" };
-      state.token = "";
+      state = initialState;
+      return state;
     },
   },
 });

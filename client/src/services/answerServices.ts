@@ -3,7 +3,6 @@ import { IAnswer } from "../interface/questionInterface";
 import { AppDispatch } from "../redux/store";
 import { axiosGet, axiosPost } from "./axiosConfig";
 
-
 export const initialAnswerState = (questionId: string): IAnswer => {
   return {
     _id: "",
@@ -14,8 +13,8 @@ export const initialAnswerState = (questionId: string): IAnswer => {
     },
     likes: 0,
     dislikes: 0,
-    createdAt: null,
-    updatedAt: null,
+    createdAt: "",
+    updatedAt: "",
     question: questionId,
   };
 };
@@ -33,7 +32,6 @@ export const addAnswer = async (
   await axiosPost(`/api/answers/${questionId}`, answer);
   await getAnswers(questionId, dispatch);
 };
-
 
 
 export const responeToAnswer = async (
