@@ -2,7 +2,7 @@ import { FC } from "react";
 import { Button } from "react-bootstrap";
 
 interface SelectedTagsProps {
-  tags: string[] | undefined;
+  tags: string[] ;
   removeTag: (tag: string) => void;
 }
 

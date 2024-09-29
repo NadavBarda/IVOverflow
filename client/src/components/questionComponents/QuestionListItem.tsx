@@ -22,10 +22,12 @@ const QuestionListItem: FC<{ question: IQuestion }> = ({ question }) => {
   return (
     <Card
       className="mb-3 shadow-lg"
-      onClick={handleCardClick}
       aria-label={`View details for question titled ${question.title}`}
     >
-      <Card.Body>
+      <Card.Header>
+        <Card.Title>{question.title}</Card.Title>
+      </Card.Header>
+      <Card.Body onClick={handleCardClick}>
         <Card.Text className="" title={question.body}>
           <div className="fw-bold mb-2 text-secondary text-decoration-underline">
             Question:

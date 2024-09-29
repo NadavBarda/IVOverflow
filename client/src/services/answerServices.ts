@@ -42,17 +42,4 @@ export const addAnswer = async (
   await getAnswers(questionId, dispatch, authHeader);
 };
 
-export const responeToAnswer = async (
-  answerId: string,
-  questionId: string,
-  type: string,
-  dispatch: AppDispatch,
-  authHeader: string
-) => {
-  await axiosPost({
-    url: `/api/answers/${answerId}/${type}`,
-    authHeader,
-    data: {},
-  });
-  await getAnswers(questionId, dispatch, authHeader);
-};
+

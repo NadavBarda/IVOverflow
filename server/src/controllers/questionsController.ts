@@ -4,15 +4,14 @@ import { Answer } from "../models/answerModel";
 import { User } from "../models/userModel";
 import { Request, Response } from "express";
 
-
 const getQuestions = asyncHandler(async (req: Request, res: Response) => {
-  const questions = await Question.find();
+  const questions = await Question.find().sort({ updatedAt: -1 });
   res.status(200).json(questions);
 });
 
 const getQuestion = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params;
-  const answers = await Answer.find({});
+  await Answer.find({});
   const question = await Question.findById(id).populate("answers").exec();
   res.status(200).json(question);
 });

@@ -6,7 +6,10 @@ interface CheckboxListProps {
   setSelectedItems: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-const CheckboxList: FC<CheckboxListProps> = ({ selectedItems, setSelectedItems }) => {
+const CheckboxList: FC<CheckboxListProps> = ({
+  selectedItems,
+  setSelectedItems,
+}) => {
   const items = availableTags;
 
   const handleCheckboxChange = (tag: string) => {
@@ -21,14 +24,13 @@ const CheckboxList: FC<CheckboxListProps> = ({ selectedItems, setSelectedItems }
 
   return (
     <div className="container mt-2">
-      {/* Heading */}
-      <h4 className="mb-3">Select Tags</h4>
-      
-      
-      <div className="form-group" style={{ maxHeight: "120px", overflowY: "auto" }}>
+      <div className="mb-3 fw-bold">Select Tags</div>
+      <div
+        className="form-group"
+        style={{ maxHeight: "120px", overflowY: "auto" }}
+      >
         {items.map((item, index) => (
           <div key={index} className="form-check">
-            {/* Checkbox input */}
             <input
               className="form-check-input"
               type="checkbox"
@@ -37,7 +39,7 @@ const CheckboxList: FC<CheckboxListProps> = ({ selectedItems, setSelectedItems }
               checked={selectedItems.includes(item)}
               onChange={() => handleCheckboxChange(item)}
             />
-       
+
             <label className="form-check-label" htmlFor={`checkbox-${index}`}>
               {item}
             </label>
