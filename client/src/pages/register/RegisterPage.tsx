@@ -18,7 +18,7 @@ const RegisterPage: React.FC = () => {
     lastName: "",
     email: "",
   });
-
+  const authHeader = useAuthHeader();
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     const validations = validateUser(user);
@@ -27,7 +27,7 @@ const RegisterPage: React.FC = () => {
     try {
       const res = await axiosPost({
         url: "/api/users/register",
-        authHeader: useAuthHeader(),
+        authHeader: authHeader,
         data: user,
       });
       if (res.status === 201) {

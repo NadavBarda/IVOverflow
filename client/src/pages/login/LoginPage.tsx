@@ -6,8 +6,6 @@ import Form from "react-bootstrap/Form";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../features/user/userSlice";
-import { axiosPost } from "../../services/axiosConfig";
-import useAuthHeader from "react-auth-kit/hooks/useAuthHeader";
 import { loginUser } from "../../services/userServices";
 
 const LoginPage: FC = () => {
@@ -17,7 +15,6 @@ const LoginPage: FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const signIn = useSignIn();
-  const authHeader = useAuthHeader();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
